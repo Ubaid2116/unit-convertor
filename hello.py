@@ -19,15 +19,16 @@ def load_lottieurl(url):
 lottie_animation = load_lottieurl("https://assets10.lottiefiles.com/packages/lf20_5tkzkblw.json")
 
 # App Title and Description
-st.title("Unit Converter")
+st.title("Heavy Unit Converter")
 st.write("Convert various units with ease using this app.")
 
 # Sidebar for Conversion Category
 st.sidebar.markdown("## Unit Converter")
 st.sidebar.info("Select a conversion category and input values for conversion.")
 
-# Sidebar Animation
-st.sidebar_lottie(lottie_animation, height=200, key="sidebar_animation")
+# Display Lottie animation in the sidebar
+with st.sidebar:
+    st_lottie(lottie_animation, height=200, key="sidebar_animation")
 
 # Sidebar selectbox for conversion category
 conversion_category = st.sidebar.selectbox(
