@@ -1,16 +1,35 @@
 import asyncio
 import sys
+import streamlit as st
+from streamlit_lottie import st_lottie
+import requests
 
+# Set event loop policy for Windows
 if sys.platform.startswith("win"):
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
-# Ab baaki imports aur Streamlit code
-import streamlit as st
+# Load Lottie animations
+def load_lottieurl(url):
+    r = requests.get(url)
+    if r.status_code != 200:
+        return None
+    return r.json()
 
-st.title("Heavy Unit Converter")
-st.write("Is app ke zariye aap mukhtalif units ka conversion kar sakte hain.")
+# Lottie animation URLs
+lottie_animation = load_lottieurl("https://assets10.lottiefiles.com/packages/lf20_5tkzkblw.json")
 
-# Sidebar se conversion category select karen
+# App Title and Description
+st.title("Unit Converter")
+st.write("Convert various units with ease using this app.")
+
+# Sidebar for Conversion Category
+st.sidebar.markdown("## Unit Converter")
+st.sidebar.info("Select a conversion category and input values for conversion.")
+
+# Sidebar Animation
+st.sidebar_lottie(lottie_animation, height=200, key="sidebar_animation")
+
+# Sidebar selectbox for conversion category
 conversion_category = st.sidebar.selectbox(
     "Select Conversion Category",
     ["Length", "Temperature", "Weight", "Speed"]
@@ -127,6 +146,43 @@ elif conversion_category == "Speed":
         result = convert_speed(value, from_unit, to_unit)
         st.write(f"{value} {from_unit} = {result} {to_unit}")
 
-# Sidebar Information
-st.sidebar.markdown("## Unit Converter")
-st.sidebar.info("Conversion category select karen aur values input karen conversion ke liye.")
+# Footer
+st.markdown("---")
+st.markdown("Developed by **Muhammad Ubaid Hussain**")
+
+# Custom CSS for styling
+st.markdown(
+    """
+    <style>
+    .stButton>button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 24px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .stButton>button:hover {
+        background-color: #45a049;
+    }
+    .stSelectbox>div>div>select {
+        padding: 10px;
+        border-radius: 5px;
+    }
+    .stNumberInput>div>div>input {
+        padding: 10px;
+        border-radius: 5px;
+    }
+    .stMarkdown h1 {
+        color: #4CAF50;
+    }
+    .stMarkdown h2 {
+        color: #45a049;
+    }
+    .stMarkdown h3 {
+        color: #45a049;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
