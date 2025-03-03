@@ -1,22 +1,10 @@
 import asyncio
 import sys
 import streamlit as st
-from streamlit_lottie import st_lottie
-import requests
 
 # Set event loop policy for Windows
 if sys.platform.startswith("win"):
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-
-# Load Lottie animations
-def load_lottieurl(url):
-    r = requests.get(url)
-    if r.status_code != 200:
-        return None
-    return r.json()
-
-# Lottie animation URLs
-lottie_animation = load_lottieurl("https://assets10.lottiefiles.com/packages/lf20_5tkzkblw.json")
 
 # App Title and Description
 st.title("Heavy Unit Converter")
@@ -25,10 +13,6 @@ st.write("Convert various units with ease using this app.")
 # Sidebar for Conversion Category
 st.sidebar.markdown("## Unit Converter")
 st.sidebar.info("Select a conversion category and input values for conversion.")
-
-# Display Lottie animation in the sidebar
-with st.sidebar:
-    st_lottie(lottie_animation, height=200, key="sidebar_animation")
 
 # Sidebar selectbox for conversion category
 conversion_category = st.sidebar.selectbox(
