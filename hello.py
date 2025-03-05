@@ -1,13 +1,22 @@
 import asyncio
 import sys
 import streamlit as st
+import google.generativeai as genai
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Set event loop policy for Windows
 if sys.platform.startswith("win"):
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
+# Configure Gemini API
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+
 # App Title and Description
-st.title("Heavy Unit Converter")
+st.title("Unit Converter")
 st.write("Convert various units with ease using this app.")
 
 # Sidebar for Conversion Category
@@ -130,6 +139,15 @@ elif conversion_category == "Speed":
     if st.button("Convert"):
         result = convert_speed(value, from_unit, to_unit)
         st.write(f"{value} {from_unit} = {result} {to_unit}")
+
+# Gemini API Integration for Additional Features
+st.sidebar.markdown("## Ask Gemini")
+user_query = st.sidebar.text_input("Ask Gemini anything about unit conversions:")
+if user_query:
+    model = genai.GenerativeModel("gemini-pro")
+    response = model.generate_content(user_query)
+    st.sidebar.write("**Gemini's Response:**")
+    st.sidebar.write(response.text)
 
 # Footer
 st.markdown("---")
